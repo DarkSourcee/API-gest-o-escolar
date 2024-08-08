@@ -1,6 +1,5 @@
 package com.gerenciamento.gerenciamento.entity;
 
-import com.gerenciamento.gerenciamento.enums.CursoEnum;
 import com.gerenciamento.gerenciamento.enums.StatusEnum;
 import com.gerenciamento.gerenciamento.enums.TurnoEnum;
 
@@ -31,10 +30,6 @@ public class AlunoEntity {
     @Column(name = "matricula")
     private String matricula;
 
-    @Column(name = "curso")
-    @Enumerated(EnumType.STRING)
-    private CursoEnum curso;
-
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
@@ -46,6 +41,10 @@ public class AlunoEntity {
     @ManyToOne
     @JoinColumn(name = "turma_id")
     private TurmaEntity turma;
+
+    @ManyToOne
+    @JoinColumn(name = "curso_id")
+    private CursoEntity curso;
 
     /* getters e setters */
     public void setId(Long id) {
@@ -70,14 +69,6 @@ public class AlunoEntity {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
-    }
-
-    public CursoEnum getCurso() {
-        return curso;
-    }
-
-    public void setCurso(CursoEnum curso) {
-        this.curso = curso;
     }
 
     public TurnoEnum getTurno() {
@@ -110,5 +101,13 @@ public class AlunoEntity {
 
     public void setTurma(TurmaEntity turma) {
         this.turma = turma;
+    }
+
+    public CursoEntity getCurso() {
+        return curso;
+    }
+
+    public void setCurso(CursoEntity curso) {
+        this.curso = curso;
     }
 }

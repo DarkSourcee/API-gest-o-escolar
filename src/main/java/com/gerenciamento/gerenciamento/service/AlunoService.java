@@ -6,10 +6,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.gerenciamento.gerenciamento.DTO.AlunoDTO;
+import com.gerenciamento.gerenciamento.DTO.CursoDTO;
 import com.gerenciamento.gerenciamento.DTO.TurmaDTO;
 import com.gerenciamento.gerenciamento.entity.AlunoEntity;
+import com.gerenciamento.gerenciamento.entity.CursoEntity;
 import com.gerenciamento.gerenciamento.entity.TurmaEntity;
 import com.gerenciamento.gerenciamento.repository.AlunoRepository;
+import com.gerenciamento.gerenciamento.repository.CursoRepository;
 import com.gerenciamento.gerenciamento.repository.TurmaRepository;
 
 @Service
@@ -17,10 +20,13 @@ public class AlunoService {
 
     private final AlunoRepository alunoRepository;
     private final TurmaRepository turmaRepository;
+    private final CursoRepository cursoRepository;
 
-    public AlunoService(AlunoRepository alunoRepository, TurmaRepository turmaRepository) {
+    public AlunoService(AlunoRepository alunoRepository, TurmaRepository turmaRepository,
+            CursoRepository cursoRepository) {
         this.alunoRepository = alunoRepository;
         this.turmaRepository = turmaRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     public AlunoDTO convertToDTO(AlunoEntity alunoEntity) {
@@ -29,11 +35,13 @@ public class AlunoService {
         dto.setNome(alunoEntity.getNome());
         dto.setCpf(alunoEntity.getCpf());
         dto.setMatricula(alunoEntity.getMatricula());
-        dto.setCurso(alunoEntity.getCurso());
         dto.setStatus(alunoEntity.getStatus());
         dto.setTurno(alunoEntity.getTurno());
         if (alunoEntity.getTurma() != null) {
             dto.setTurma_id(alunoEntity.getTurma().getId());
+        }
+        if (alunoEntity.getCurso() != null) {
+            dto.setCurso_id(alunoEntity.getCurso().getId());
         }
 
         // Preenchendo dados da turma
@@ -42,6 +50,14 @@ public class AlunoService {
             turmaDTO.setId(alunoEntity.getTurma().getId());
             turmaDTO.setNome(alunoEntity.getTurma().getNome());
             dto.setTurmaDTO(turmaDTO);
+        }
+
+        // Preenchendo o curso
+        if (alunoEntity.getCurso() != null) {
+            CursoDTO cursoDTO = new CursoDTO();
+            cursoDTO.setId(alunoEntity.getCurso().getId());
+            cursoDTO.setNome(alunoEntity.getCurso().getNome());
+            dto.setCursoDTO(cursoDTO);
         }
 
         return dto;
@@ -57,17 +73,24 @@ public class AlunoService {
             throw new IllegalArgumentException("Turma deve ser informada.");
         }
 
+        if (alunoDTO.getCurso_id() == null) {
+            throw new IllegalArgumentException("Curso deve ser informado.");
+        }
+
         TurmaEntity turma = turmaRepository.findById(alunoDTO.getTurma_id())
                 .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada"));
+
+        CursoEntity curso = cursoRepository.findById(alunoDTO.getCurso_id())
+                .orElseThrow(() -> new IllegalArgumentException("Curso não encontrada"));
 
         AlunoEntity alunoEntity = new AlunoEntity();
         alunoEntity.setNome(alunoDTO.getNome());
         alunoEntity.setCpf(alunoDTO.getCpf());
         alunoEntity.setMatricula(alunoDTO.getMatricula());
-        alunoEntity.setCurso(alunoDTO.getCurso());
         alunoEntity.setStatus(alunoDTO.getStatus());
         alunoEntity.setTurno(alunoDTO.getTurno());
         alunoEntity.setTurma(turma);
+        alunoEntity.setCurso(curso);
 
         alunoEntity = alunoRepository.save(alunoEntity);
         return convertToDTO(alunoEntity);
@@ -115,7 +138,6 @@ public class AlunoService {
         alunoEntity.setNome(alunoDTO.getNome());
         alunoEntity.setCpf(alunoDTO.getCpf());
         alunoEntity.setMatricula(alunoDTO.getMatricula());
-        alunoEntity.setCurso(alunoDTO.getCurso());
         alunoEntity.setStatus(alunoDTO.getStatus());
         alunoEntity.setTurno(alunoDTO.getTurno());
 

@@ -1,6 +1,5 @@
 package com.gerenciamento.gerenciamento.DTO;
 
-import com.gerenciamento.gerenciamento.enums.CursoEnum;
 import com.gerenciamento.gerenciamento.enums.StatusEnum;
 import com.gerenciamento.gerenciamento.enums.TurnoEnum;
 
@@ -9,11 +8,12 @@ public class AlunoDTO {
     private String nome;
     private String cpf;
     private String matricula;
-    private CursoEnum curso;
     private StatusEnum status;
     private TurnoEnum turno;
     private Long turma_id;
+    private Long curso_id;
     private TurmaDTO turmaDTO;
+    private CursoDTO cursoDTO;
 
     public Long getId() {
         return id;
@@ -47,14 +47,6 @@ public class AlunoDTO {
         this.matricula = matricula;
     }
 
-    public CursoEnum getCurso() {
-        return curso;
-    }
-
-    public void setCurso(CursoEnum curso) {
-        this.curso = curso;
-    }
-
     public StatusEnum getStatus() {
         return status;
     }
@@ -85,5 +77,21 @@ public class AlunoDTO {
 
     public void setTurmaDTO(TurmaDTO turmaDTO) {
         this.turmaDTO = turmaDTO;
+    }
+
+    public CursoDTO getCursoDTO() {
+        return cursoDTO;
+    }
+
+    public void setCursoDTO(CursoDTO cursoDTO) {
+        this.cursoDTO = cursoDTO;
+    }
+
+    public Long getCurso_id() {
+        return curso_id;
+    }
+
+    public void setCurso_id(Long curso_id) {
+        this.curso_id = curso_id;
     }
 }
