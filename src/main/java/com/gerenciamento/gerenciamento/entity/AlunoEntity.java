@@ -11,6 +11,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,7 +20,7 @@ import jakarta.persistence.Table;
 public class AlunoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long Id;
 
     @Column(name = "nome")
     private String nome;
@@ -41,12 +43,16 @@ public class AlunoEntity {
     @Enumerated(EnumType.STRING)
     private TurnoEnum turno;
 
+    @ManyToOne
+    @JoinColumn(name = "turma_id")
+    private TurmaEntity turma;
+
     /* getters e setters */
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return Id;
     }
 
@@ -98,4 +104,11 @@ public class AlunoEntity {
         this.status = status;
     }
 
+    public TurmaEntity getTurma() {
+        return turma;
+    }
+
+    public void setTurma(TurmaEntity turma) {
+        this.turma = turma;
+    }
 }

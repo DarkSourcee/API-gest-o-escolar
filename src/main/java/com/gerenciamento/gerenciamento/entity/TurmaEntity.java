@@ -1,10 +1,13 @@
 package com.gerenciamento.gerenciamento.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,7 +15,7 @@ import jakarta.persistence.Table;
 public class TurmaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long Id;
 
     @Column(name = "nome")
     private String nome;
@@ -23,11 +26,14 @@ public class TurmaEntity {
     @Column(name = "periodo")
     private String periodo;
 
-    public long getId() {
+    @OneToMany(mappedBy = "turma")
+    private Set<AlunoEntity> alunos;
+
+    public Long getId() {
         return Id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         Id = id;
     }
 
@@ -55,4 +61,11 @@ public class TurmaEntity {
         this.periodo = periodo;
     }
 
+    public Set<AlunoEntity> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(Set<AlunoEntity> alunos) {
+        this.alunos = alunos;
+    }
 }
